@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useWheelScrollLock } from './useWheelThrottle';
 
 type UseFlickViewOptions = {
   sectionCount: number;
@@ -11,7 +12,7 @@ export function useFlickView(
   { sectionCount, startIndex = 0, onSectionChange }: UseFlickViewOptions,
 ) {
   const currentIndex = useRef(startIndex);
-  const isScrolling = useRef(false);
+  const canScroll = useWheelScrollLock(800);
 
   const scrollToSection = (index: number) => {
     const node = ref.current;
@@ -30,19 +31,11 @@ export function useFlickView(
     if (!node) return;
 
     const onWheel = (e: WheelEvent) => {
-      if (isScrolling.current) return;
-      isScrolling.current = true;
+      e.preventDefault();
+      if (!canScroll()) return;
 
-      const delta = e.deltaY;
-      if (delta > 0) {
-        scrollToSection(currentIndex.current + 1);
-      } else if (delta < 0) {
-        scrollToSection(currentIndex.current - 1);
-      }
-
-      setTimeout(() => {
-        isScrolling.current = false;
-      }, 800);
+      const direction = e.deltaY > 0 ? 1 : -1;
+      scrollToSection(currentIndex.current + direction);
     };
 
     node.addEventListener('wheel', onWheel, { passive: true });

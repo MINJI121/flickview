@@ -5,7 +5,7 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useFlickView(containerRef, {
-    sectionCount: 4,
+    sectionCount: 5,
     startIndex: 0,
     onSectionChange: (i) => console.log('섹션 이동:', i),
   });
@@ -15,7 +15,8 @@ function App() {
       <section style={{ height: '100vh', backgroundColor: '#f99' }}>1</section>
       <section style={{ height: '100vh', backgroundColor: '#9f9' }}>2</section>
       <section style={{ height: '100vh', backgroundColor: '#99f' }}>3</section>
-      <section style={{ height: '100vh', backgroundColor: '#f99' }}>4</section>
+      <section style={{ height: '100vh', backgroundColor: '#f95' }}>4</section>
+      <section style={{ height: '100vh', backgroundColor: '#2f9' }}>5</section>
     </div>
   );
 }
