@@ -1,13 +1,28 @@
 import { useRef } from 'react';
-import { useFlickView } from '../hooks/useFlickView';
+import { useFlickController } from '../hooks/useFlickController';
+import { useWheel } from '../hooks/useWheel';
+import { useKeyboard } from '../hooks/useKeyboard';
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useFlickView(containerRef, {
+  const { scrollToSection, currentIndex } = useFlickController(containerRef, {
     sectionCount: 5,
     startIndex: 0,
     onSectionChange: (i) => console.log('섹션 이동:', i),
+  });
+
+  useWheel({
+    ref: containerRef,
+    currentIndex,
+    sectionCount: 5,
+    scrollToSection,
+  });
+
+  useKeyboard({
+    onKeyInput: (direction) => {
+      scrollToSection(currentIndex.current + direction);
+    },
   });
 
   return (
