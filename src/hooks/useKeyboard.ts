@@ -1,26 +1,41 @@
 import { useEffect } from 'react';
-
-type Direction = 1 | -1;
+import { useFlickController } from './useFlickController';
 
 interface UseKeyboardOptions {
-  onKeyInput: (direction: Direction) => void;
+  ref: React.RefObject<HTMLElement | null>;
+  sectionCount: number;
+  startIndex?: number;
+  onSectionChange?: (index: number) => void;
 }
 
-export function useKeyboard({ onKeyInput }: UseKeyboardOptions) {
+export function useKeyboard({
+  ref,
+  sectionCount,
+  startIndex = 0,
+  onSectionChange,
+}: UseKeyboardOptions) {
+  const { currentIndex, scrollToSection } = useFlickController(ref, {
+    sectionCount,
+    startIndex,
+    onSectionChange,
+  });
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' || e.key === ' ') {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (['ArrowDown', 'ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) {
         e.preventDefault();
-        onKeyInput(1);
-      } else if (e.key === 'ArrowUp') {
+        scrollToSection(currentIndex.current + 1);
+      } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
         e.preventDefault();
-        onKeyInput(-1);
+        scrollToSection(currentIndex.current - 1);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onKeyInput]);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [ref, sectionCount, scrollToSection]);
+
+  useEffect(() => {
+    scrollToSection(startIndex);
+  }, []);
 }

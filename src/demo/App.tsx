@@ -1,37 +1,14 @@
 import { useRef } from 'react';
-import { useFlickController } from '../hooks/useFlickController';
 import { useWheel } from '../hooks/useWheel';
 import { useKeyboard } from '../hooks/useKeyboard';
 import { useTouch } from '../hooks/useTouch';
 
 function App() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const { scrollToSection, currentIndex } = useFlickController(containerRef, {
-    sectionCount: 5,
-    startIndex: 0,
-    onSectionChange: (i) => console.log('섹션 이동:', i),
-  });
-
-  useWheel({
-    ref: containerRef,
-    currentIndex,
-    sectionCount: 5,
-    scrollToSection,
-  });
-
-  useKeyboard({
-    onKeyInput: (direction) => {
-      scrollToSection(currentIndex.current + direction);
-    },
-  });
-
-  useTouch({
-    ref: containerRef,
-    currentIndex,
-    sectionCount: 5,
-    scrollToSection,
-  });
+  useWheel({ ref: containerRef, sectionCount: 5 });
+  useKeyboard({ ref: containerRef, sectionCount: 5 });
+  useTouch({ ref: containerRef, sectionCount: 5 });
 
   return (
     <div ref={containerRef} style={{ height: '100vh', overflow: 'hidden' }}>

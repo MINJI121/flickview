@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 
-type UseFlickControllerOptions = {
+interface UseFlickControllerOptions {
   sectionCount: number;
   startIndex?: number;
   onSectionChange?: (index: number) => void;
-};
+}
 
 export function useFlickController(
   ref: React.RefObject<HTMLElement | null>,
@@ -24,8 +24,5 @@ export function useFlickController(
     onSectionChange?.(clampedIndex);
   };
 
-  return {
-    scrollToSection,
-    currentIndex,
-  };
+  return { currentIndex, scrollToSection };
 }

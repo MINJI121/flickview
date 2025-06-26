@@ -1,43 +1,48 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useFlickController } from './useFlickController';
 
-type UseTouchOptions = {
+interface UseTouchOptions {
   ref: React.RefObject<HTMLElement | null>;
-  currentIndex: React.RefObject<number>;
   sectionCount: number;
-  scrollToSection: (index: number) => void;
-};
+  startIndex?: number;
+  onSectionChange?: (index: number) => void;
+}
 
-export function useTouch({ ref, currentIndex, sectionCount, scrollToSection }: UseTouchOptions) {
-  const startY = useRef<number | null>(null);
+export function useTouch({ ref, sectionCount, startIndex = 0, onSectionChange }: UseTouchOptions) {
+  const { currentIndex, scrollToSection } = useFlickController(ref, {
+    sectionCount,
+    startIndex,
+    onSectionChange,
+  });
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
 
-    const handleTouchStart = (e: TouchEvent) => {
-      startY.current = e.touches[0].clientY;
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
     };
 
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (startY.current === null) return;
-      const endY = e.changedTouches[0].clientY;
-      const deltaY = startY.current - endY;
-
-      const threshold = 30;
-      if (Math.abs(deltaY) > threshold) {
-        const direction = deltaY > 0 ? 1 : -1;
-        scrollToSection(currentIndex.current + direction);
-      }
-
-      startY.current = null;
+    const onTouchEnd = (e: TouchEvent) => {
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+      if (Math.abs(deltaY) < 50) return;
+      const direction = deltaY > 0 ? 1 : -1;
+      scrollToSection(currentIndex.current + direction);
     };
 
-    node.addEventListener('touchstart', handleTouchStart);
-    node.addEventListener('touchend', handleTouchEnd);
+    node.addEventListener('touchstart', onTouchStart);
+    node.addEventListener('touchend', onTouchEnd);
 
     return () => {
-      node.removeEventListener('touchstart', handleTouchStart);
-      node.removeEventListener('touchend', handleTouchEnd);
+      node.removeEventListener('touchstart', onTouchStart);
+      node.removeEventListener('touchend', onTouchEnd);
     };
   }, [ref, sectionCount, scrollToSection]);
+
+  useEffect(() => {
+    scrollToSection(startIndex);
+  }, []);
 }
