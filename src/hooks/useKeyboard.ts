@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useFlickController } from './useFlickController';
+import { useKeyboardLock } from './useKeyboardLock';
 
 interface UseKeyboardOptions {
   ref: React.RefObject<HTMLElement | null>;
@@ -20,8 +21,12 @@ export function useKeyboard({
     onSectionChange,
   });
 
+  const startLock = useKeyboardLock(800);
+
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (!startLock()) return;
+
       if (['ArrowDown', 'ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) {
         e.preventDefault();
         scrollToSection(currentIndex.current + 1);
