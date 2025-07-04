@@ -1,18 +1,18 @@
 import { useRef } from 'react';
 
 export function useLock(animationDuration = 800) {
-  const startLock = useRef(false);
+  const isLocking = useRef(false);
 
-  const startScroll = () => {
-    if (startLock.current) return false;
+  const startLock = () => {
+    if (isLocking.current) return false;
 
-    startLock.current = true;
+    isLocking.current = true;
     setTimeout(() => {
-      startLock.current = false;
+      isLocking.current = false;
     }, animationDuration);
 
     return true;
   };
 
-  return startScroll;
+  return startLock;
 }
