@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFlickController } from './useFlickController';
-import { useKeyboardLock } from './useKeyboardLock';
+import { useLock } from './useLock';
 
 interface UseKeyboardOptions {
   ref: React.RefObject<HTMLElement | null>;
@@ -21,7 +21,7 @@ export function useKeyboard({
     onSectionChange,
   });
 
-  const startLock = useKeyboardLock(800);
+  const startLock = useLock(800);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
