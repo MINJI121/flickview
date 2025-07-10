@@ -10,7 +10,7 @@ type FlickViewProps = {
   onSectionChange?: (index: number) => void;
 };
 
-export function FlickView({ children, startIndex = 0, onSectionChange }: FlickViewProps) {
+function FlickView({ children, startIndex = 0, onSectionChange }: FlickViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionCount = React.Children.count(children);
 
@@ -30,3 +30,5 @@ export function FlickView({ children, startIndex = 0, onSectionChange }: FlickVi
     </div>
   );
 }
+
+export default FlickView;

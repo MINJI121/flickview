@@ -1,4 +1,4 @@
-import { FlickView } from '../components/FlickView';
+import FlickView from '../components/FlickView';
 
 function App() {
   return (
