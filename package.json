@@ -31,11 +31,11 @@
   },
   "main": "./dist/flickview-index.cjs.js",
   "module": "./dist/flickview-index.es.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/flickview-index.es.js",
-      "require": "./dist/flickview-index.cjs.js"
+      "require": "./dist/flickview-index.cjs.js",
+      "types": "./dist-types/index.d.ts"
     }
   },
   "files": [
