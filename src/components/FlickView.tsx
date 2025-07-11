@@ -4,11 +4,11 @@ import { useWheel } from '../hooks/useWheel';
 import { useKeyboard } from '../hooks/useKeyboard';
 import { useTouch } from '../hooks/useTouch';
 
-type FlickViewProps = {
+interface FlickViewProps {
   children: React.ReactNode;
   startIndex?: number;
   onSectionChange?: (index: number) => void;
-};
+}
 
 function FlickView({ children, startIndex = 0, onSectionChange }: FlickViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
