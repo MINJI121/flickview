@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFlickController } from './useFlickController';
-import { useWheelScrollLock } from './useWheelScrollLock';
+import { useLock } from './useLock';
 
 interface UseWheelOptions {
   ref: React.RefObject<HTMLElement | null>;
@@ -16,7 +16,7 @@ export function useWheel({ ref, sectionCount, startIndex = 0, onSectionChange }:
     onSectionChange,
   });
 
-  const canScroll = useWheelScrollLock(800);
+  const startLock = useLock(800);
 
   useEffect(() => {
     const node = ref.current;
@@ -24,7 +24,7 @@ export function useWheel({ ref, sectionCount, startIndex = 0, onSectionChange }:
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      if (!canScroll()) return;
+      if (!startLock()) return;
       const direction = e.deltaY > 0 ? 1 : -1;
       scrollToSection(currentIndex.current + direction);
     };

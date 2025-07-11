@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -29,5 +29,18 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0"
-  }
+  },
+  "main": "./dist/flickview-index.cjs.js",
+  "module": "./dist/flickview-index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/flickview-index.es.js",
+      "require": "./dist/flickview-index.cjs.js"
+    }
+  },
+  "files": [
+    "dist",
+    "dist-types"
+  ]
 }
