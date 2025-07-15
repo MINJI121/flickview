@@ -1,6 +1,6 @@
 {
   "name": "flickview",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -33,9 +33,9 @@
   "module": "./dist/flickview-index.es.js",
   "exports": {
     ".": {
+      "types": "./dist-types/index.d.ts",
       "import": "./dist/flickview-index.es.js",
-      "require": "./dist/flickview-index.cjs.js",
-      "types": "./dist-types/index.d.ts"
+      "require": "./dist/flickview-index.cjs.js"
     }
   },
   "files": [
