@@ -1,69 +1,66 @@
-# React + TypeScript + Vite
+# Flickview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**flickview** is a full-page scroll utility for React that allows screen transitions by section, based on **wheel**, **keyboard**, and **touch** input.
 
-Currently, two official plugins are available:
+Designed with user experience and scalability in mind, it enables smooth section-by-section navigation with minimal setup.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<br/>
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install flickview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+<br/>
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Basic usage
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```tsx
+import { FlickView } from 'flickview';
+
+function App() {
+  return (
+    <FlickView>
+      <section>Section 1</section>
+      <section>Section 2</section>
+      <section>Section 3</section>
+    </FlickView>
+  );
+}
 ```
+
+<br/>
+
+## Props
+
+| 이름              | 타입                      | 설명                                                        |
+| ----------------- | ------------------------- | ----------------------------------------------------------- |
+| `startIndex`      | `number`                  | Index of the section to show on initial render (default: 0) |
+| `onSectionChange` | `(index: number) => void` | Callback function fired when the section changes            |
+
+<br/>
+
+## Using individual hooks
+
+```tsx
+import { useWheel, useFlickController } from 'flickview';
+
+const { scrollToSection, currentIndex } = useFlickController(containerRef, {
+  startIndex: 0,
+  onSectionChange: (i) => console.log(i),
+  sectionCount: 5,
+});
+
+useWheel({ ref: containerRef, scrollToSection, currentIndex, sectionCount: 5 });
+```
+
+<br/>
+
+## Build environment
+
+- Supports both ESM and CommonJS module formats (exports.import, exports.require)
+
+- Includes .d.ts type definition files (exports.types)
+
+- Built using Vite + TypeScript Compiler, with separated output directories (dist, dist-types)
