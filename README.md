@@ -28,6 +28,7 @@ function App() {
     </FlickView>
   );
 }
+// Each section should have full height (e.g. 100vh) for proper scrolling.
 ```
 
 <br/>
@@ -44,15 +45,21 @@ function App() {
 ## Using individual hooks
 
 ```tsx
-import { useWheel, useFlickController } from 'flickview';
+import { useRef } from 'react';
+import { useWheel } from '../hooks/useWheel';
 
-const { scrollToSection, currentIndex } = useFlickController(containerRef, {
-  startIndex: 0,
-  onSectionChange: (i) => console.log(i),
-  sectionCount: 5,
-});
+function App() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  useWheel({ ref: containerRef, sectionCount: 3 });
 
-useWheel({ ref: containerRef, scrollToSection, currentIndex, sectionCount: 5 });
+  return (
+    <div ref={containerRef} style={{ height: '100vh', overflow: 'hidden' }}>
+      <section style={{ height: '100vh', backgroundColor: '#f99' }}>Section 1</section>
+      <section style={{ height: '100vh', backgroundColor: '#9f9' }}>Section 2</section>
+      <section style={{ height: '100vh', backgroundColor: '#99f' }}>Section 3</section>
+    </div>
+  );
+}
 ```
 
 <br/>
