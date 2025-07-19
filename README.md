@@ -34,7 +34,7 @@ function App() {
 
 ## Props
 
-| 이름              | 타입                      | 설명                                                        |
+| Name              | Type                      | Description                                                 |
 | ----------------- | ------------------------- | ----------------------------------------------------------- |
 | `startIndex`      | `number`                  | Index of the section to show on initial render (default: 0) |
 | `onSectionChange` | `(index: number) => void` | Callback function fired when the section changes            |
